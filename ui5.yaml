@@ -1,0 +1,33 @@
+specVersion: "4.0"
+metadata:
+  name: com.csr.flp.ext
+type: application
+server:
+  customMiddleware:
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertErrors: false
+        backend:
+          - path: /sap
+            url: http://appsapfioride.ap1.hana.ondemand.com:44303
+            destination: CSR_ECC
+          - path: /sap
+            destination: CSR_ECC
+            url: http://appsapfioride.ap1.hana.ondemand.com:44303
+        ui5:
+          path:
+            - /resources
+            - /test-resources
+          url: https://ui5.sap.com
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+    - name: fiori-tools-preview
+      afterMiddleware: fiori-tools-appreload
+      configuration:
+        component: com.csr.flp.ext
+        ui5Theme: sap_fiori_3

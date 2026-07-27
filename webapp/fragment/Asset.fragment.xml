@@ -1,0 +1,24 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+	<Dialog id="assetDialog" title="Asset Selection">
+		<content>
+			<VBox class="sapUiSmallMargin">
+				<f:SimpleForm id="AssetForm" minWidth="1024" maxContainerCols="2" editable="true" layout="ResponsiveGridLayout" title=""
+					labelSpanL="3" labelSpanM="3" emptySpanL="4" emptySpanM="4" columnsL="1" columnsM="1" class="editableForm">
+					<f:content>
+						<Label text="Asset"/>
+						<Input id="currentAsset" value="{Asset>/selectedAssetID}" editable="false" visible="{Asset>/available}"/>
+						<ComboBox id="AssetIDSelect" width="100%" visible="{Asset>/notAvailable}"
+								 selectedKey="{Asset>/selectedAssetID}" items="{Asset>/AssetList}">
+							<core:Item key="{Asset>Terminal}" text="{Asset>Terminal} ( {Asset>Poslane} )"/>
+						</ComboBox>
+					</f:content>
+				</f:SimpleForm>
+			</VBox>
+		</content>
+		<endButton>
+			<Button id="confirmBtn2" type="Accept" 
+					text="Confirm" press="onConfirmAsset">
+			</Button>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

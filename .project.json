@@ -1,0 +1,17 @@
+{
+  "projectType": [
+    "sap.watt.uitools.ide.fiori",
+    "sap.watt.uitools.ide.web",
+    "com.watt.common.builder.sapui5clientbuild"
+  ],
+  "build": {
+    "buildRequired": true,
+    "targetFolder": "dist",
+    "lastBuildDateTime": "Tue, 09 May 2017 09:30:58 GMT"
+  },
+  "hcpdeploy": {
+    "account": "cc7c2b28c",
+    "name": "csrflpextension",
+    "lastVersionWeTriedToDeploy": "1.0.93"
+  }
+}

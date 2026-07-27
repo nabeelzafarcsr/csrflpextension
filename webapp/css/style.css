@@ -1,0 +1,4 @@
+/* Enter your custom styles here */
+.HiddenField{
+	-webkit-text-security: circle;
+}

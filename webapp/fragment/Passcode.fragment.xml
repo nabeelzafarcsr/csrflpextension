@@ -1,0 +1,30 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+	<Dialog id="authDialog" title="Switch User">
+		<content>
+			<VBox class="sapUiSmallMargin">
+				<f:SimpleForm id="SimpleForm" minWidth="1024" maxContainerCols="2" editable="true" layout="ResponsiveGridLayout" title="Authenticate"
+					labelSpanL="3" labelSpanM="3" emptySpanL="4" emptySpanM="4" columnsL="1" columnsM="1" class="editableForm">
+					<f:content>
+						<Label text="Logged In User"/>
+						<Input id="currentUser" value="" editable="false"/>
+						<Label text= "Logged In Timestamp"/>
+						<Input id="currentSession" value="15 Jan 2017 10:15:00 AM" editable="false"/>
+						<Label text="Passcode"/>
+						<Input id="passcode" value="" placeholder="Provide your Unique Passcode" 
+							   type="Password" required="true"/>
+					</f:content>
+				</f:SimpleForm>
+			</VBox>
+		</content>
+		<beginButton>
+			<Button id="confirmBtn" type="Accept" 
+					text="Confirm" press="onConfirm">
+			</Button>
+		</beginButton>
+		<endButton>
+			<Button id="cancelBtn" type="Reject"
+					text="Cancel" press="onCancel">
+			</Button>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

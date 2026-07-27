@@ -1,0 +1,35 @@
+<edmx:Edmx
+    xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+    xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+    xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema
+            xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="FLPExtension" xml:lang="en" sap:schema-version="1">
+            <EntityType Name="UserDetail" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="UserID"/>
+                </Key>
+                <Property Name="UserID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="Passcode" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="StoreID" Type="Edm.String" MaxLength="4"/>
+            </EntityType>
+            <EntityType Name="Asset" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="StoreID"/>
+                    <PropertyRef Name="AssetID"/>
+                </Key>
+                <Property Name="StoreID" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="AssetID" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="AssetType" Type="Edm.String" Nullable="false" MaxLength="10"/>
+            </EntityType>
+            <EntityContainer Name="FLPExtension_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="UserDetails" EntityType="FLPExtension.UserDetail" sap:content-version="1"/>
+                <EntitySet Name="Assets" EntityType="FLPExtension.Asset" sap:content-version="1"/>
+            </EntityContainer>
+            <atom:link
+                xmlns:atom="http://www.w3.org/2005/Atom" rel="self" href="./sap/ZPOSITIVE_LPD_EXTN_SRV/$metadata"/>
+                <atom:link
+                    xmlns:atom="http://www.w3.org/2005/Atom" rel="latest-version" href="./sap/ZPOSITIVE_LPD_EXTN_SRV/$metadata"/>
+                </Schema>
+            </edmx:DataServices>
+        </edmx:Edmx>

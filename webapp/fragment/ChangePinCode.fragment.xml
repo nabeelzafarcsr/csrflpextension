@@ -1,0 +1,29 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+	<Dialog id="changePinCodeDialog" title="Create New Pin">
+		<content>
+			<VBox class="sapUiSmallMargin">
+				<f:SimpleForm id="changeForm" minWidth="1024" maxContainerCols="2" editable="true" layout="ResponsiveGridLayout" title="Authenticate"
+					labelSpanL="3" labelSpanM="3" emptySpanL="4" emptySpanM="4" columnsL="1" columnsM="1" class="editableForm">
+					<f:content>
+						<Label text="Old Passcode"/>
+						<Input id="oldPasscode" value="" placeholder="Old Password" 
+							   type="Password" required="true"/>
+						<Label text="New Passcode"/>
+						<Input id="newPasscode" value="" placeholder="New Password" 
+							   type="Password" required="true"/>
+					</f:content>
+				</f:SimpleForm>
+			</VBox>
+		</content>
+		<beginButton>
+			<Button id="confirmBtn" type="Accept" 
+					text="Confirm" press="onChangePin">
+			</Button>
+		</beginButton>
+		<endButton>
+			<Button id="cancelBtn" type="Reject" 
+					text="Confirm" press="onCancel">
+			</Button>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>
