@@ -29,18 +29,10 @@ sap.ui.define([
             var that = this;
             this._bDialogOpen = false;
 
-            //Set Standard FLP Timeout value to 24 Hrs
-            //Changes made during Neo to Cloud FOundation Migration - 22/07/2027 by FAIR TEAM
-            /* Remove this code as it is not required anymore. The timeout is set in a different way in Build Work ZOne with the below code or overwritten with the Work ZOne settings.
-            if (sap.hana.uis.flp.SessionTimeoutHandler) {
-                sap.hana.uis.flp.SessionTimeoutHandler.heliumSessionTimeout = 24 * 60 * 60 * 1000;
-            }
-                */
-
-            if (window.sap && sap.hana && sap.hana.uis && sap.hana.uis.flp && sap.hana.uis.flp.SessionTimeoutHandler) {
-    sap.hana.uis.flp.SessionTimeoutHandler.heliumSessionTimeout = 24 * 60 * 60 * 1000;
-}
-              //Changes made during Neo to Cloud FOundation Migration - 22/07/2027 by FAIR TEAM
+            //Keep the Work Zone session alive for up to 24 Hrs (replaces the Neo heliumSessionTimeout override).
+            //Work Zone caps Site Settings > Session Duration at 30 min, so an idle tab would expire and reload,
+            //losing unsaved data. Ping the shell every 10 min so background tabs are not timed out.
+            this._startSessionKeepAlive();
 
             //Manage Home Button
             //Changes made during Neo to Cloud FOundation Migration - 22/07/2027 by FAIR TEAM
@@ -240,12 +232,37 @@ sap.ui.define([
                 //Increment the idle time counter every minute.	
                 //Zero the idle timer on mouse movement.
                 $(this).mousemove(function (e) {
-                    document.idleTime = 0;
+                    if (!that._bKeepAlivePing) {
+                        document.idleTime = 0;
+                    }
                 });
                 $(this).keypress(function (e) {
                     document.idleTime = 0;
                 });
             });
+        },
+        _startSessionKeepAlive: function () {
+            var that = this;
+            var iStart = Date.now();
+            var iMaxMs = 24 * 60 * 60 * 1000;
+            this._iKeepAliveTimer = setInterval(function () {
+                if (Date.now() - iStart > iMaxMs) {
+                    clearInterval(that._iKeepAliveTimer);
+                    return;
+                }
+                // Flag lets the PIN idle timer ignore this synthetic event so the lock still works.
+                that._bKeepAlivePing = true;
+                try {
+                    if (window.sap && sap.ushell && sap.ushell.Container && sap.ushell.Container.sessionKeepAlive) {
+                        sap.ushell.Container.sessionKeepAlive();
+                    }
+                    document.dispatchEvent(new MouseEvent("mousemove", { bubbles: true }));
+                } catch (e) {
+                    console.warn("Session keep-alive failed", e);
+                } finally {
+                    that._bKeepAlivePing = false;
+                }
+            }, 10 * 60 * 1000);
         },
         tryAlternativeAssetDetection: function (jsonData) {
             var that = this;
@@ -743,8 +760,18 @@ sap.ui.define([
  //Changed during Neo to Cloud Foundry migration - 22/07/2026 by FAIR
         getAssetId: function () {
             var componentData = this.getComponentData && this.getComponentData();
-            var assetURL = componentData && componentData.config && componentData.config.assetURL;
+            var assetURL;
             var asset;
+            var hostName = window.location.hostname;
+            if (hostName.indexOf("csr-epos-dev") !== -1) {
+               assetURL = "https://nslookupdev.csr.com.au/NsLookupService.asmx/GetDNSLookup";
+            } else if (hostName.indexOf("csr-epos-qas") !== -1) {
+                assetURL = "https://nslookupstage.csr.com.au/NsLookupService.asmx/GetDNSLookup";
+            } else {
+               assetURL = "https://nslookup.csr.com.au/NsLookupService.asmx/GetDNSLookup";
+            }
+            //var assetURL = componentData && componentData.config && componentData.config.assetURL;
+          
 
             console.log("DNS Lookup URL:", assetURL);  // Debug log
 
